@@ -1,33 +1,42 @@
 // HTML table element
-const gridTable = $('#pixel_canvas');
+const gridTable = document.querySelector('#pixelCanvas');
 
 // When size is submitted by the user, call makeGrid()
-$('input:submit').click(function(event){
+document.querySelector('input[type=submit]').addEventListener('click', (event) => {
   event.preventDefault();
   makeGrid();
 });
 
 // makeGrid Function
 function makeGrid() {
-  gridTable.empty();
-  let gridHeight = document.getElementById("input_height").value;
-  let gridWidth = document.getElementById("input_width").value;
+  
+  // Empty grid
+  gridTable.innerHTML = "";
+  
+  // Store values from both grid height and width input
+  let gridHeight = document.querySelector("#inputHeight").value;
+  let gridWidth = document.querySelector("#inputWidth").value;
+  
+  // Create rows and columns
   for (var r = 0; r < gridHeight; r ++ ) {
-    gridTable.append('<tr class="' + r + '">', '</tr>');
+    let tableRow = document.createElement('tr');
+    gridTable.appendChild(tableRow).className = `row${r}`;
     for (var c = 0; c < gridWidth; c ++) {
-      $('.' + r).append('<td>', '</td>');
+      let tableColumn = document.createElement('td');
+      gridTable.querySelector(`.row${r}`).appendChild(tableColumn);
     }
   }
 };
 
 // Add or remove background color to click table cell
-gridTable.on("click", "td", function() {
-  const colorInput = document.getElementById("colorPicker").value;
-  if($(this).hasClass('clicked')) {
-    $(this).removeAttr('style');
-    $(this).removeClass('clicked');
+gridTable.addEventListener('click', (event) => {
+  const colorInput = document.querySelector("#colorPicker").value;
+  if(event.target.classList.contains('clicked')) {
+    event.target.removeAttribute("style");
+    event.target.classList.remove("clicked");
   } else {
-    $(this).css("background-color", colorInput);
-    $(this).addClass('clicked');
+    event.target.style.backgroundColor = colorInput;
+    event.target.classList.add("clicked");
+
   }
 });
